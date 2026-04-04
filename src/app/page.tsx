@@ -10,7 +10,7 @@ import Desktop from "@/components/desktop/Desktop";
 type Phase = "boot" | "security" | "breach" | "security-retry" | "login" | "desktop";
 
 /* ~30% chance the breach error screen appears */
-const BREACH_CHANCE = 0.3;
+const BREACH_CHANCE = 1.0;
 
 export default function HomePage() {
   const [phase, setPhase] = useState<Phase>("boot");

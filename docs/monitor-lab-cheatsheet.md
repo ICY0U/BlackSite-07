@@ -1,8 +1,8 @@
 # Monitor Lab Cheatsheet
 
-This file tracks the tweakable values for the CRT monitor scene in [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx).
+This file tracks the tweakable values for the CRT monitor scene in [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx) and the breach/login flow in [../src/app/page.tsx](../src/app/page.tsx) and [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx).
 
-Update this file whenever the live tuning values change.
+Update this file whenever the live tuning values, breach timing, or on-screen copy change.
 
 ## Where To Edit Things
 
@@ -19,6 +19,12 @@ Update this file whenever the live tuning values change.
 - Keyboard placement in the scene is applied in [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L260).
 - Camera settings are applied in [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L272).
 - Orbit control settings are applied in [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L297).
+- Breach trigger chance lives in [../src/app/page.tsx](../src/app/page.tsx#L13).
+- Breach phase handoff is in [../src/app/page.tsx](../src/app/page.tsx#L18).
+- Breach alert copy lives in [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L20).
+- Breach shutdown copy lives in [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L40).
+- Breach sequence timing lives in [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L69).
+- Breach animation CSS lives in [../src/app/globals.css](../src/app/globals.css#L273).
 
 ## Primary Tuning Block
 
@@ -37,15 +43,15 @@ const MONITOR_TUNING = {
   powerButtonYOffset: 0,
   powerButtonDepthOffset: -0.02,
   powerButtonHitRadius: 0.065,
-  keyboardPosition: [0, -1.075, 0.9] as const,
+  keyboardPosition: [0, -0.5, 0.9] as const,
   keyboardScale: 4.2,
   keyboardRotation: [0, 0, 0] as const,
   modelPosition: [0, -0.5, 0] as const,
   modelScale: 0.8,
   modelRotationY: Math.PI,
   overlayRotationY: Math.PI,
-  cameraPosition: [0, 0.5, 2.3] as const,
-  cameraFov: 37.5,
+  cameraPosition: [0, 0.6, 3.0] as const,
+  cameraFov: 32.5,
   orbitTarget: [0, -0.14, 0] as const,
   orbitMinDistance: 1.35,
   orbitMaxDistance: 4.8,
@@ -53,6 +59,99 @@ const MONITOR_TUNING = {
   orbitMaxPolarAngle: Math.PI / 1.72,
 };
 ```
+
+## Direct Monitor Value Links
+
+Each link below jumps straight to the live value in [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L34).
+
+### Screen Overlay Fit
+
+- `screenPixelWidth = 960` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L35)
+- `screenOffsetX = 0` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L36)
+- `screenOffsetY = 0` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L37)
+- `screenDepthOffset = -0.0001` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L38)
+- `screenWidthScale = -1` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L39)
+- `screenHeightScale = -1` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L40)
+- `htmlDistanceFactor = 0.415` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L41)
+
+### Power Button Interaction
+
+- `powerButtonXRatio = 0.93` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L42)
+- `powerButtonYOffset = 0` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L43)
+- `powerButtonDepthOffset = -0.02` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L44)
+- `powerButtonHitRadius = 0.065` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L45)
+
+### Monitor Transform
+
+- `modelPosition = [0, -0.5, 0]` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L49)
+- `modelScale = 0.8` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L50)
+- `modelRotationY = Math.PI` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L51)
+- `overlayRotationY = Math.PI` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L52)
+
+### Keyboard Placement
+
+- `keyboardPosition = [0, -0.5, 0.9]` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L46)
+- `keyboardScale = 4.2` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L47)
+- `keyboardRotation = [0, 0, 0]` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L48)
+
+### Camera and Orbit
+
+- `cameraPosition = [0, 0.6, 3.0]` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L53)
+- `cameraFov = 32.5` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L54)
+- `orbitTarget = [0, -0.14, 0]` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L55)
+- `orbitMinDistance = 1.35` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L56)
+- `orbitMaxDistance = 4.8` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L57)
+- `orbitMinPolarAngle = Math.PI / 4.6` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L58)
+- `orbitMaxPolarAngle = Math.PI / 1.72` — [../src/components/monitor/MonitorLabClient.tsx](../src/components/monitor/MonitorLabClient.tsx#L59)
+
+## Breach Error Reference
+
+These links jump straight to the current breach trigger, text blocks, timings, and animation hooks.
+
+### Trigger and Flow
+
+- `BREACH_CHANCE = 1.0` — [../src/app/page.tsx](../src/app/page.tsx#L13)
+- Random breach check — [../src/app/page.tsx](../src/app/page.tsx#L19)
+- Breach screen mount — [../src/app/page.tsx](../src/app/page.tsx#L40)
+- Return to security after breach — [../src/app/page.tsx](../src/app/page.tsx#L28)
+
+### Breach Text Blocks
+
+- Warning alert lines — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L20)
+- Shutdown protocol lines — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L40)
+- Cascade error list — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L94)
+- BSOD body copy — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L169)
+- BSOD stop code — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L193)
+- BSOD failed module — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L194)
+- Alert header text — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L252)
+
+### Breach Timing Values
+
+- Glitch ramp loop count — `5` iterations — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L71)
+- Glitch ramp delay — `300ms` per step — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L74)
+- Warning line delay source — each line uses its own `delay` field — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L83)
+- Warning-to-cascade pause — `500ms` — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L89)
+- Cascade line delay — `100ms` — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L104)
+- Cascade-to-shutdown pause — `400ms` — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L108)
+- Power-off duration — `1500ms` — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L124)
+- BSOD duration — `5000ms` — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L129)
+- Reboot fade duration — `800ms` — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L134)
+- Skip binding during BSOD/reboot — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L147)
+
+### Breach Animation Hooks
+
+- Main breach animation container — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L214)
+- Glitch CSS variable injection — [../src/components/os/BreachError.tsx](../src/components/os/BreachError.tsx#L222)
+- Animation CSS index — [../src/app/globals.css](../src/app/globals.css#L273)
+- `breach-glitch-jitter` keyframes — [../src/app/globals.css](../src/app/globals.css#L276)
+- `.breach-glitch` class — [../src/app/globals.css](../src/app/globals.css#L288)
+- `breach-bar-slide` keyframes — [../src/app/globals.css](../src/app/globals.css#L293)
+- `.breach-glitch-bar` class — [../src/app/globals.css](../src/app/globals.css#L298)
+- `breach-border-flash` keyframes — [../src/app/globals.css](../src/app/globals.css#L303)
+- `.breach-border-pulse` class — [../src/app/globals.css](../src/app/globals.css#L307)
+- `breach-vignette-pulse` keyframes — [../src/app/globals.css](../src/app/globals.css#L312)
+- `.breach-vignette` class — [../src/app/globals.css](../src/app/globals.css#L316)
+- `.breach-scroll` class — [../src/app/globals.css](../src/app/globals.css#L322)
 
 ## What Each Value Does
 

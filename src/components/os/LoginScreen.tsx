@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Props {
   onLogin: () => void;
@@ -8,8 +8,8 @@ interface Props {
 }
 
 export default function LoginScreen({ onLogin, autoFocus = true }: Props) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("Root");
+  const [password, setPassword] = useState("Root");
   const [error, setError] = useState("");
   const [loggingIn, setLoggingIn] = useState(false);
   const [dots, setDots] = useState("");
@@ -18,7 +18,8 @@ export default function LoginScreen({ onLogin, autoFocus = true }: Props) {
   useEffect(() => {
     if (!autoFocus) return;
     usernameRef.current?.focus();
-  }, [autoFocus]);
+    usernameRef.current?.setSelectionRange(username.length, username.length);
+  }, [autoFocus, username.length]);
 
   /* Animated dots during login */
   useEffect(() => {
