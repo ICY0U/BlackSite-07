@@ -1,0 +1,358 @@
+@import "tailwindcss";
+@theme inline {
+  --font-mono: var(--font-mono);
+  --font-pixel: var(--font-pixel);
+  --font-vt: var(--font-vt);
+
+  /* Terminal colors */
+  --color-term-bg: #0c0c0c;
+  --color-term-text: #a0a0a0;
+  --color-term-bright: #d4d4d4;
+  --color-term-dim: #555555;
+  --color-term-prompt: #5af78e;
+  --color-term-error: #ff5c57;
+  --color-term-warn: #f3f99d;
+  --color-term-info: #57c7ff;
+  --color-term-ai: #c792ea;
+  --color-term-success: #5af78e;
+  --color-term-cyan: #9aedfe;
+  --color-term-border: #2a2a2a;
+
+  /* OS Desktop colors */
+  --color-os-bg: #1a1a2e;
+  --color-os-panel: #16213e;
+  --color-os-panel-border: #0f3460;
+  --color-os-accent: #e94560;
+  --color-os-text: #c4c4c4;
+  --color-os-text-dim: #666680;
+  --color-os-window-bg: #12122a;
+  --color-os-window-title: #1a1a3e;
+  --color-os-window-border: #2a2a5e;
+  --color-os-taskbar: #0a0a1e;
+  --color-os-icon-hover: rgba(233, 69, 96, 0.15);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-term-bg);
+  color: var(--color-term-text);
+  font-family: var(--font-mono), "JetBrains Mono", "Courier New", monospace;
+}
+
+/* Pixel-perfect rendering for retro elements */
+.pixel-perfect {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+}
+
+/* Pixel font helper */
+.font-pixel {
+  font-family: var(--font-pixel), monospace;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+}
+
+/* VT323 for OS system text */
+.font-vt {
+  font-family: var(--font-vt), monospace;
+}
+
+/* Terminal scrollbar */
+.terminal-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.terminal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.terminal-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-term-border);
+  border-radius: 0;
+}
+.terminal-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-term-dim);
+}
+
+/* Blinking cursor */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Scanlines */
+.scanlines {
+  position: relative;
+}
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.06) 2px,
+    rgba(0, 0, 0, 0.06) 4px
+  );
+  z-index: 1000;
+}
+
+/* Pixel border style -- retro window chrome */
+.pixel-border {
+  border: 2px solid var(--color-os-window-border);
+  box-shadow:
+    inset 1px 1px 0 rgba(255,255,255,0.05),
+    inset -1px -1px 0 rgba(0,0,0,0.3),
+    2px 2px 0 rgba(0,0,0,0.4);
+}
+
+/* Pixel inset -- for input fields, panels */
+.pixel-inset {
+  border: 2px solid;
+  border-color: #111 #333 #333 #111;
+  box-shadow: inset 1px 1px 0 rgba(0,0,0,0.4);
+}
+
+/* Desktop icon hover */
+.desktop-icon {
+  transition: background-color 0.1s;
+  cursor: pointer;
+  user-select: none;
+}
+.desktop-icon:hover {
+  background-color: var(--color-os-icon-hover);
+}
+.desktop-icon:active {
+  background-color: rgba(233, 69, 96, 0.25);
+}
+
+/* Dithered background pattern */
+.dither-bg {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAEElEQVQIW2NkYPj/n4EBABJkAwMBqn/mAAAAAElFTkSuQmCC");
+  background-repeat: repeat;
+  image-rendering: pixelated;
+}
+
+/* Subtle CRT screen glow */
+.crt-glow {
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(0, 0, 0, 0.5);
+}
+/* Window drag handle */
+.drag-handle {
+  cursor: grab;
+}
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+/* Pixel button */
+.pixel-btn {
+  border: 2px solid;
+  border-color: #444 #222 #222 #444;
+  background: #2a2a3e;
+  cursor: pointer;
+  transition: filter 0.05s;
+}
+.pixel-btn:hover {
+  filter: brightness(1.2);
+}
+.pixel-btn:active {
+  border-color: #222 #444 #444 #222;
+  filter: brightness(0.9);
+}
+
+/* Desktop-only custom cursor */
+.desktop-cursor-scope,
+.desktop-cursor-scope * {
+  cursor: url("/sprites/cursor-desktop.png") 1 1, url("/sprites/cursor-desktop.svg") 1 1, default;
+}
+.desktop-cursor-scope input,
+.desktop-cursor-scope textarea {
+  cursor: text;
+}
+
+.desktop-cursor-scope .desktop-icon,
+.desktop-cursor-scope .pixel-btn,
+.desktop-cursor-scope button,
+.desktop-cursor-scope [role="button"],
+.desktop-cursor-scope a {
+  cursor: url("/sprites/cursor-desktop.png") 1 1, url("/sprites/cursor-desktop.svg") 1 1, pointer;
+}
+
+.desktop-cursor-scope .drag-handle {
+  cursor: url("/sprites/cursor-desktop.png") 1 1, url("/sprites/cursor-desktop.svg") 1 1, grab;
+}
+
+.desktop-cursor-scope .drag-handle:active {
+  cursor: url("/sprites/cursor-desktop.png") 1 1, url("/sprites/cursor-desktop.svg") 1 1, grabbing;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .desktop-cursor-scope,
+  .desktop-cursor-scope * {
+    cursor: auto;
+  }
+}
+
+/* ── Security Init — Retinal Scan animations ─────────── */
+
+/* Pupil breathing */
+.pupil-pulse {
+  animation: pupil-breathe 2s ease-in-out infinite;
+}
+@keyframes pupil-breathe {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+/* Shimmer across the progress bar */
+@keyframes scan-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+.scan-bar-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,92,87,0.2), transparent);
+  animation: scan-shimmer 1.5s ease-in-out infinite;
+}
+
+/* Text glow for BLACKSITE / 07 */
+.security-glow {
+  text-shadow: 0 0 8px rgba(255, 92, 87, 0.4), 0 0 20px rgba(255, 92, 87, 0.15);
+}
+
+/* Green glow for verified */
+.security-glow-green {
+  text-shadow: 0 0 8px rgba(90, 247, 142, 0.4), 0 0 20px rgba(90, 247, 142, 0.15);
+}
+
+/* Classification label flash */
+@keyframes classification-flash {
+  0%, 90%, 100% { opacity: 0.6; }
+  95% { opacity: 0.2; }
+}
+.classification-flash {
+  animation: classification-flash 4s ease-in-out infinite;
+}
+
+/* Fade in for completion text / data lines */
+@keyframes security-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.security-fade-in {
+  animation: security-fade-in 0.5s ease-out forwards;
+}
+
+/* Eye subject slides into frame */
+@keyframes eye-slide-in {
+  0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+  60% { opacity: 0.8; transform: translateY(-3px) scale(1.01); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.eye-slide-in {
+  animation: eye-slide-in 0.8s ease-out forwards;
+}
+
+/* ── Breach Error animations ─────────────────────────── */
+
+/* Glitch jitter on the whole container */
+@keyframes breach-glitch-jitter {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-2px, 1px); }
+  20% { transform: translate(3px, -1px); }
+  30% { transform: translate(-1px, 2px); }
+  40% { transform: translate(2px, -2px); }
+  50% { transform: translate(-3px, 0); }
+  60% { transform: translate(1px, 2px); }
+  70% { transform: translate(-2px, -1px); }
+  80% { transform: translate(3px, 1px); }
+  90% { transform: translate(-1px, -2px); }
+}
+.breach-glitch {
+  animation: breach-glitch-jitter 0.15s steps(1) infinite;
+}
+
+/* Scanning glitch bars */
+@keyframes breach-bar-slide {
+  0% { transform: translateX(-100%); opacity: 0.3; }
+  50% { transform: translateX(100%); opacity: 0.1; }
+  100% { transform: translateX(-100%); opacity: 0.3; }
+}
+.breach-glitch-bar {
+  animation: breach-bar-slide 0.5s ease-in-out infinite;
+}
+
+/* Red border pulse */
+@keyframes breach-border-flash {
+  0%, 100% { border-color: rgba(255, 92, 87, 0.1); }
+  50% { border-color: rgba(255, 92, 87, 0.5); }
+}
+.breach-border-pulse {
+  animation: breach-border-flash 0.4s ease-in-out infinite;
+}
+
+/* Red vignette flash during cascade */
+@keyframes breach-vignette-pulse {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+.breach-vignette {
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(255, 30, 20, 0.15) 100%);
+  animation: breach-vignette-pulse 0.6s ease-in-out infinite;
+}
+
+/* Auto-scroll terminal to bottom */
+.breach-scroll {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 100%;
+}
+
+/* BSOD flicker on appear */
+@keyframes bsod-flicker {
+  0% { opacity: 0; }
+  5% { opacity: 1; }
+  7% { opacity: 0.3; }
+  10% { opacity: 1; }
+  100% { opacity: 1; }
+}
+.bsod-flicker {
+  animation: bsod-flicker 0.5s ease-out forwards;
+}
+
+/* BSOD percentage counter */
+@keyframes bsod-pct {
+  0% { content: "0%"; }
+  10% { content: "12%"; }
+  20% { content: "27%"; }
+  30% { content: "34%"; }
+  40% { content: "48%"; }
+  50% { content: "56%"; }
+  60% { content: "67%"; }
+  70% { content: "79%"; }
+  80% { content: "88%"; }
+  90% { content: "94%"; }
+  100% { content: "100%"; }
+}
+.bsod-pct-counter::before {
+  content: "0%";
+  animation: bsod-pct 5s steps(1) forwards;
+}

@@ -1,0 +1,20 @@
+{
+  "colorTabs.buttons": [
+    {
+      "label": "$(play) Run",
+      "command": "vscode:workbench.action.debug.start",
+      "color": "#5af78e",
+      "tooltip": "Start dev server (F5)",
+      "priority": 1000
+    },
+    {
+      "label": "$(rocket) Build & Run",
+      "command": "task:build",
+      "color": "#57c7ff",
+      "tooltip": "Build production",
+      "priority": 999
+    }
+  ],
+  "colorTabs.reuseTerminal": true,
+  "colorTabs.terminalName": "BLACKSITE-07"
+}
